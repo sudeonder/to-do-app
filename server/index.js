@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import taskRoutes from "./routes/tasks.js";
+import { config } from "dotenv";
+
+config();
 
 const app = express();
 
@@ -15,12 +18,11 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use("/tasks", taskRoutes);
 
 // connect to MongoDB
-const db_connection_url =
-  "mongodb+srv://sudeonder999:fcxInJPWYrcDp1Ud@cluster0.pt9iw0x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
 const port = process.env.PORT || 8000;
 
 mongoose
-  .connect(db_connection_url, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
