@@ -8,14 +8,13 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
-  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-
+import FileBase64 from "react-file-base64";
 import { createTask } from "../../features/tasks/tasksSlice";
 
 const AddTaskButton = () => {
@@ -26,6 +25,7 @@ const AddTaskButton = () => {
     status: "to-do",
     tags: "",
     priority: "medium",
+    selectedFile: "",
     //generate random string for user id
     userId: Math.random().toString(36).substring(7),
   });
@@ -153,6 +153,15 @@ const AddTaskButton = () => {
                 <MenuItem value="low">Low</MenuItem>
               </Select>
             </FormControl>
+            <div className="img-button">
+              <FileBase64
+                type="file"
+                multiple={false}
+                onDone={({ base64 }) =>
+                  setTaskData({ ...taskData, selectedFile: base64 })
+                }
+              />
+            </div>
           </Box>
         </DialogContent>
         <DialogActions>

@@ -26,3 +26,13 @@
 .button-submit:hover {
     background-color: #482f7b;
 }
+
+.img-button input[type="file" i]::-webkit-file-upload-button{
+    margin-top: 15px;
+    background-color: #474649;
+    border: #a7d0e4;
+    height: 30px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5%;
+}

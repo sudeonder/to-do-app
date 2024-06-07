@@ -6,8 +6,10 @@ import {
   Typography,
   CardActions,
   Button,
-  Box,
+  CardMedia,
+  Avatar,
 } from "@mui/material";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
 
@@ -19,11 +21,22 @@ const Task = ({ task }) => {
 
   return (
     <Card className="task-card">
-      <CardHeader title={task.title} subheader={task.status} />
+      <CardHeader
+        titleTypographyProps={{ variant: "h5" }}
+        title={task.title}
+        avatar={
+          <Avatar alt="thumbnail" src={task.selectedFile}>
+            <AssignmentIcon />
+          </Avatar>
+        }
+      />
+
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {task.description}
-        </Typography>
+        <div>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {task.details}
+          </Typography>
+        </div>
       </CardContent>
       <CardActions className="card-actions">
         <Button
