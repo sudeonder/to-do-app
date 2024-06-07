@@ -1,1 +1,1 @@
-export const POST_URL = "http://localhost:8000/tasks";
+export const TASK_URL = "http://localhost:8000/tasks";

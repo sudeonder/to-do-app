@@ -3,14 +3,15 @@ import { Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
+import { fetchTasks } from "../../features/tasks/tasksSlice";
+
 const Tasks = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.tasks);
 
   // fetch posts on component mount
   useEffect(() => {
-    dispatch(() => {});
-    console.log(data);
+    dispatch(fetchTasks());
   }, [dispatch]);
 
   return (
