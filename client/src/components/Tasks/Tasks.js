@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { fetchTasks } from "../../features/tasks/tasksSlice";
+import Task from "../Task/Task";
+import "./styles.css";
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -14,6 +16,11 @@ const Tasks = () => {
     dispatch(fetchTasks());
   }, [dispatch]);
 
+  // filter tasks based on status
+  const filterTasks = (status) => {
+    return data.filter((task) => task.status === status);
+  };
+
   return (
     <Grid
       container
@@ -22,13 +29,24 @@ const Tasks = () => {
       spacing={3}
     >
       <Grid item xs={12} sm={4} sx={{ bgColor: "grey" }}>
-        <Typography>To-do </Typography>
+        <Typography level="h3" className="task-status">
+          To-do
+        </Typography>
+        {filterTasks("to-do").map((task) => (
+          <Task key={task.id} task={task} />
+        ))}
       </Grid>
       <Grid item xs={12} sm={4} sx={{ bgColor: "grey" }}>
-        <Typography>In Progress</Typography>
+        <Typography className="task-status">In Progress</Typography>
+        {filterTasks("in-progress").map((task) => (
+          <Task key={task.id} task={task} />
+        ))}
       </Grid>
       <Grid item xs={12} sm={4} sx={{ bgColor: "grey" }}>
-        <Typography>Done</Typography>
+        <Typography className="task-status">Done</Typography>
+        {filterTasks("completed").map((task) => (
+          <Task key={task.id} task={task} />
+        ))}
       </Grid>
     </Grid>
   );

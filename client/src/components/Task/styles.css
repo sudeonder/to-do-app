@@ -1,0 +1,12 @@
+.task-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 15px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    box-shadow: 0 0 1px rgba(16, 15, 15, 0.1);
+    border-color: rgb(89, 88, 88);
+    border-style: dotted;
+}
