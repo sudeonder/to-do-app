@@ -9,6 +9,13 @@ const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   return response.data;
 });
 
+const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
+  // delete task from api
+  // return deleted task id as payload
+  await axios.delete(`${TASK_URL}/${id}`);
+  return id;
+});
+
 const initialState = {
   data: [],
   loading: false,
@@ -20,20 +27,32 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchTasks.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchTasks.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.loading = false;
-    });
-    builder.addCase(fetchTasks.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    });
+    builder
+      .addCase(fetchTasks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = state.data.filter((task) => task._id !== action.payload);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 
 // export const {} = tasksSlice.actions;
 export default tasksSlice.reducer;
-export { fetchTasks };
+export { fetchTasks, deleteTask };

@@ -1,5 +1,19 @@
 .task-status {
     display: flex;
     font-size: 30px;
-    font-weight: 800   ;
+    font-weight: 800;
+    margin-left: 10px;
+}
+
+.card-grid {
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.status-icon {
+    margin-left: 10px;
+    width: 30px;
+    height: auto;
 }

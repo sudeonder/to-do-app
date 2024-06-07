@@ -1,4 +1,5 @@
 .task-card {
+    margin: 0px 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,4 +10,10 @@
     box-shadow: 0 0 1px rgba(16, 15, 15, 0.1);
     border-color: rgb(89, 88, 88);
     border-style: dotted;
+}
+
+.delete-button {
+    text-align: right;
+    float: right;
+    cursor: pointer;
 }
