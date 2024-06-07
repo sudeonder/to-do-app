@@ -17,7 +17,7 @@ const Tasks = () => {
   // fetch posts on component mount
   useEffect(() => {
     dispatch(fetchTasks());
-  }, [dispatch]);
+  }, [dispatch, data]);
 
   // filter tasks based on status
   const filterTasks = (status) => {

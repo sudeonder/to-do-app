@@ -16,6 +16,13 @@ const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
   return id;
 });
 
+const createTask = createAsyncThunk("tasks/createTask", async (task) => {
+  // create task in api
+  // return created task as payload
+  const response = await axios.post(TASK_URL, task);
+  return response.data;
+});
+
 const initialState = {
   data: [],
   loading: false,
@@ -55,4 +62,4 @@ const tasksSlice = createSlice({
 
 // export const {} = tasksSlice.actions;
 export default tasksSlice.reducer;
-export { fetchTasks, deleteTask };
+export { fetchTasks, deleteTask, createTask };

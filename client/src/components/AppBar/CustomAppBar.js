@@ -9,10 +9,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+
 import "./customAppBar.css";
+import AddTaskButton from "./AddTaskButton";
 
 const CustomAppBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = React.useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,6 +45,7 @@ const CustomAppBar = () => {
         >
           TaskLab
         </Typography>
+        <AddTaskButton />
         <div>
           <IconButton
             size="large"

@@ -8,3 +8,21 @@
     font-weight: 500;
     color: rgb(0, 0, 0);
 }
+
+.add-task-button {
+    background-color: #8860d0;
+    color: white;
+}
+
+.add-task-button:hover {
+    background-color: #482f7b;
+}
+
+.button-submit {
+    background-color: #8860d0;
+    color: white;
+}
+
+.button-submit:hover {
+    background-color: #482f7b;
+}
