@@ -8,12 +8,14 @@ import {
   updateTask,
 } from "../controllers/tasks.js";
 
+import { userVerification } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-router.get("/", getTasks);
-router.get("/:id", getTask);
-router.post("/", createTask);
-router.delete("/:id", deleteTask);
-router.put("/:id", updateTask);
+router.get("/", userVerification, getTasks);
+router.get("/:id", userVerification, getTask);
+router.post("/", userVerification, createTask);
+router.delete("/:id", userVerification, deleteTask);
+router.put("/:id", userVerification, updateTask);
 
 export default router;
