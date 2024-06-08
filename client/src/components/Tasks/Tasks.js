@@ -3,7 +3,7 @@ import { Grid, Typography, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { fetchTasks } from "../../features/tasks/tasksSlice";
+import { fetchTasks } from "../../features/tasksSlice";
 import Task from "../Task/Task";
 import "./styles.css";
 import todoIcon from "../../images/target.png";

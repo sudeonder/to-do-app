@@ -14,7 +14,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
 
 import "./styles.css";
-import { deleteTask } from "../../features/tasks/tasksSlice";
+import { deleteTask } from "../../features/tasksSlice";
 
 const Task = ({ task }) => {
   const dispatch = useDispatch();

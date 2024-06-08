@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TASK_URL } from "../../api/index";
+import { TASK_URL } from "../api/index";
 
 const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   // fetch tasks from api

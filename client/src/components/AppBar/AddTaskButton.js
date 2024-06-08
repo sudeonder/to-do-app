@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
-import { createTask } from "../../features/tasks/tasksSlice";
+import { createTask } from "../../features/tasksSlice";
 
 const AddTaskButton = () => {
   const dispatch = useDispatch();
@@ -38,22 +38,6 @@ const AddTaskButton = () => {
 
   const handleAddTaskClose = () => {
     setOpen(false);
-  };
-
-  const handleTitleChange = (event) => {
-    setTaskData({ ...taskData, title: event.target.value });
-  };
-
-  const handlePriorityChange = (event) => {
-    setTaskData({ ...taskData, priority: event.target.value });
-  };
-
-  const handleStatusChange = (event) => {
-    setTaskData({ ...taskData, status: event.target.value });
-  };
-
-  const handleDetailsChange = (event) => {
-    setTaskData({ ...taskData, details: event.target.value });
   };
 
   const handleSubmit = (event) => {
@@ -107,7 +91,9 @@ const AddTaskButton = () => {
               name="title"
               required
               value={taskData.title}
-              onChange={handleTitleChange}
+              onChange={(e) =>
+                setTaskData({ ...taskData, title: e.target.value })
+              }
             />
             <TextField
               label="Details"
@@ -117,14 +103,18 @@ const AddTaskButton = () => {
               name="details"
               required={false}
               value={taskData.details}
-              onChange={handleDetailsChange}
+              onChange={(e) =>
+                setTaskData({ ...taskData, details: e.target.value })
+              }
             />
             <FormControl sx={{ mt: 2, minWidth: 400 }}>
               <InputLabel htmlFor="taskStatus">Status</InputLabel>
               <Select
                 autoFocus
                 value={taskData.status}
-                onChange={handleStatusChange}
+                onChange={(e) =>
+                  setTaskData({ ...taskData, status: e.target.value })
+                }
                 label="status"
                 inputProps={{
                   name: "status",
@@ -141,7 +131,9 @@ const AddTaskButton = () => {
               <InputLabel htmlFor="taskPriority">Priority</InputLabel>
               <Select
                 value={taskData.priority}
-                onChange={handlePriorityChange}
+                onChange={(e) =>
+                  setTaskData({ ...taskData, priority: e.target.value })
+                }
                 label="Priority"
                 inputProps={{
                   name: "priority",

@@ -8,12 +8,16 @@ import {
   MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useDispatch } from "react-redux";
 
 import "./customAppBar.css";
 import AddTaskButton from "./AddTaskButton";
+import { logout } from "../../features/userSlice";
 
 const CustomAppBar = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = React.useState(false);
 
@@ -23,6 +27,12 @@ const CustomAppBar = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    setAnchorEl(null);
+    // dispatch logout action
+    dispatch(logout());
   };
 
   return (
@@ -72,8 +82,7 @@ const CustomAppBar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
           </Menu>
         </div>
       </Toolbar>

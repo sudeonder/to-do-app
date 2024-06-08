@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import headerCard from "../../images/banner.png";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, logout } from "../../features/userSlice";
 
 function Copyright(props) {
   return (
@@ -32,12 +34,31 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
+  const [userData, setUserData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  // clear user on mount
+  //useEffect(() => {
+  //  dispatch(logout());
+  //}, [dispatch]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(userData);
+    dispatch(createUser(userData));
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setUserData({
+      username: "",
+      email: "",
+      password: "",
     });
   };
 
@@ -78,30 +99,23 @@ export default function SignUp() {
           </Typography>
           <Box
             component="form"
-            noValidate
+            autoComplete="off"
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
                   required
+                  name="username"
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="username"
+                  label="Username"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  value={userData.username}
+                  onChange={(e) =>
+                    setUserData({ ...userData, username: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,6 +126,10 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={userData.email}
+                  onChange={(e) =>
+                    setUserData({ ...userData, email: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -123,14 +141,10 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                  value={userData.password}
+                  onChange={(e) =>
+                    setUserData({ ...userData, password: e.target.value })
                   }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>
@@ -143,12 +157,14 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
+              {loading && <CircularProgress sx={{ marginRight: 5 }} />}
               <Grid item>
                 <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
+            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
