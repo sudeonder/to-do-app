@@ -3,12 +3,10 @@ import jwt from "jsonwebtoken";
 
 const userVerification = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(token);
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized (missing token)" });
   }
-
   try {
     const decoded = await jwt.verify(token, process.env.TOKEN_KEY);
     const user = await User.findById(decoded.id);

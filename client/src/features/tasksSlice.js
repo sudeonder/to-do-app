@@ -12,17 +12,46 @@ const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (token) => {
   return response.data;
 });
 
-const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
+const searchTasks = createAsyncThunk("tasks/searchTasks", async (data) => {
+  const response = await axios.get(
+    `${TASK_URL}/search?searchTerm=${data.searchTerm}`,
+    {
+      headers: {
+        Authorization: data.token ? `Bearer ${data.token}` : undefined, // Include token if available
+      },
+      withCredentials: true, // Might be needed depending on your setup
+    }
+  );
+  return response.data;
+});
+
+const deleteTask = createAsyncThunk("tasks/deleteTask", async (data) => {
   // delete task from api
   // return deleted task id as payload
-  await axios.delete(`${TASK_URL}/${id}`, { withCredentials: true });
+  const id = data.id;
+  const token = data.token;
+  await axios.delete(`${TASK_URL}/${id}`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined, // Include token if available
+    },
+    withCredentials: true, // Might be needed depending on your setup
+  });
   return id;
 });
 
-const createTask = createAsyncThunk("tasks/createTask", async (task) => {
+const createTask = createAsyncThunk("tasks/createTask", async (data) => {
   // create task in api
   // return created task as payload
-  const response = await axios.post(TASK_URL, task, { withCredentials: true });
+  console.log(data.token);
+  console.log(data.task);
+  const task = data.task;
+  const token = data.token;
+  const response = await axios.post(TASK_URL, task, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined, // Include token if available
+    },
+    withCredentials: true, // Might be needed depending on your setup
+  });
   return response.data;
 });
 
@@ -70,10 +99,20 @@ const tasksSlice = createSlice({
       .addCase(createTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(searchTasks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(searchTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-// export const {} = tasksSlice.actions;
 export default tasksSlice.reducer;
-export { fetchTasks, deleteTask, createTask };
+export { fetchTasks, deleteTask, createTask, searchTasks };

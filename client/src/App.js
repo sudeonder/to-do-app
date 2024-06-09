@@ -15,6 +15,7 @@ export default function App() {
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<SignIn />} />
             <Route path="/board" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />

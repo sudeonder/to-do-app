@@ -20,6 +20,9 @@ import { deleteTask } from "../../features/tasksSlice";
 const Task = ({ task }) => {
   const dispatch = useDispatch();
 
+  // get user from session
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const renderTags = () => {
     if (!task.tags || !task.tags.length) {
       return null;
@@ -73,7 +76,9 @@ const Task = ({ task }) => {
         <Button
           size="small"
           color="primary"
-          onClick={() => dispatch(deleteTask(task._id))}
+          onClick={() =>
+            dispatch(deleteTask({ id: task._id, token: user.token }))
+          }
         >
           <DeleteForeverIcon className="delete-icon" color="action" />
         </Button>

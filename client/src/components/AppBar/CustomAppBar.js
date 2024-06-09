@@ -55,7 +55,7 @@ const CustomAppBar = () => {
         </IconButton>
         <Typography
           className="app-heading"
-          variant="h6"
+          variant="h1"
           component="div"
           sx={{ flexGrow: 1 }}
         >

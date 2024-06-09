@@ -56,7 +56,8 @@ const AddTaskButton = () => {
     event.preventDefault();
     // dispatch action to add task
     const newTask = { ...taskData, username: user.user.username, tags: chips };
-    dispatch(createTask(newTask));
+    const token = user.token;
+    dispatch(createTask({ task: newTask, token: token }));
     clearForm();
     setOpen(false);
   };

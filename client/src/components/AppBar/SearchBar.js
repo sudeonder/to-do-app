@@ -7,6 +7,8 @@ import InputBase from "@mui/material/InputBase";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchTasks } from "../../features/tasksSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,10 +54,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function SearchBar() {
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const handleSearch = () => {
-    console.log(searchTerm);
+    const token = user.token;
+    dispatch(searchTasks({ searchTerm, token }));
     setSearchTerm("");
   };
 
