@@ -7,7 +7,7 @@ const signUp = async (req, res, next) => {
     const { email, password, username } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.json({ message: "User already exists" });
+      return res.json({ message: "User already exists", success: false });
     }
     const user = await User.create({ email, password, username });
     const token = createSecretToken(user._id);
@@ -15,9 +15,12 @@ const signUp = async (req, res, next) => {
       withCredentials: true,
       httpOnly: false,
     });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
+    res.status(201).json({
+      message: "User signed up successfully",
+      success: true,
+      user: user,
+      token: token,
+    });
     next();
   } catch (error) {
     console.error(error);
@@ -32,20 +35,29 @@ const signIn = async (req, res, next) => {
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.json({ message: "Incorrect password or email" });
+      return res.json({
+        message: "Incorrect password or email",
+        success: false,
+      });
     }
     const auth = await bcrypt.compare(password, user.password);
     if (!auth) {
-      return res.json({ message: "Incorrect password or email" });
+      return res.json({
+        message: "Incorrect password or email",
+        success: false,
+      });
     }
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
     });
-    res
-      .status(201)
-      .json({ message: "User logged in successfully", success: true });
+    res.status(201).json({
+      message: "User logged in successfully",
+      success: true,
+      user: user,
+      token: token,
+    });
     next();
   } catch (error) {
     console.error(error);

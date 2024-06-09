@@ -16,21 +16,33 @@ import {
 import { useDispatch } from "react-redux";
 import FileBase64 from "react-file-base64";
 import { createTask } from "../../features/tasksSlice";
+import { useNavigate } from "react-router-dom";
+import { MuiChipsInput } from "mui-chips-input";
 
 const AddTaskButton = () => {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  if (!user) {
+    navigate("/signin");
+  }
+  const [open, setOpen] = React.useState(false);
+
+  const [chips, setChips] = React.useState([]);
+  const handleTagInput = (newChips) => {
+    setChips(newChips);
+  };
+
   const dispatch = useDispatch();
   const [taskData, setTaskData] = useState({
+    username: "",
     title: "",
     details: "",
     status: "to-do",
     tags: "",
     priority: "medium",
     selectedFile: "",
-    //generate random string for user id
-    userId: Math.random().toString(36).substring(7),
   });
-
-  const [open, setOpen] = React.useState(false);
 
   const handleAddTask = () => {
     setOpen(true);
@@ -43,20 +55,23 @@ const AddTaskButton = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // dispatch action to add task
-    dispatch(createTask(taskData));
+    const newTask = { ...taskData, username: user.user.username, tags: chips };
+    dispatch(createTask(newTask));
     clearForm();
     setOpen(false);
   };
 
   const clearForm = () => {
+    // set chips to empty array
+    setChips([]);
     setTaskData({
+      username: "",
       title: "",
       details: "",
       status: "to-do",
       tags: "",
       priority: "medium",
       //generate random string for user id
-      userId: Math.random().toString(36).substring(7),
     });
   };
 
@@ -106,6 +121,14 @@ const AddTaskButton = () => {
               onChange={(e) =>
                 setTaskData({ ...taskData, details: e.target.value })
               }
+            />
+            <MuiChipsInput
+              label="Tags"
+              autoFocus
+              value={chips}
+              onChange={handleTagInput}
+              fullWidth
+              variant="outlined"
             />
             <FormControl sx={{ mt: 2, minWidth: 400 }}>
               <InputLabel htmlFor="taskStatus">Status</InputLabel>

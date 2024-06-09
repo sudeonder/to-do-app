@@ -11,12 +11,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 import "./customAppBar.css";
 import AddTaskButton from "./AddTaskButton";
 import { logout } from "../../features/userSlice";
 
 const CustomAppBar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = React.useState(false);
@@ -33,6 +37,8 @@ const CustomAppBar = () => {
     setAnchorEl(null);
     // dispatch logout action
     dispatch(logout());
+    // navigate to sign in page
+    navigate("/signin");
   };
 
   return (
@@ -56,16 +62,20 @@ const CustomAppBar = () => {
           TaskLab
         </Typography>
         <AddTaskButton />
+        <SearchBar />
         <div>
           <IconButton
-            size="large"
+            size="xlarge"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
             color="inherit"
           >
-            <AccountCircle />
+            <AccountCircle
+              color="secondary"
+              sx={{ fontSize: 40, color: "#8860d0" }}
+            />
           </IconButton>
           <Menu
             id="menu-appbar"

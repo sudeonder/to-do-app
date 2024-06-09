@@ -12,12 +12,42 @@ import {
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
+import { Chip, Stack } from "@mui/material";
 
 import "./styles.css";
 import { deleteTask } from "../../features/tasksSlice";
 
 const Task = ({ task }) => {
   const dispatch = useDispatch();
+
+  const renderTags = () => {
+    if (!task.tags || !task.tags.length) {
+      return null;
+    }
+
+    const colors = ["#e8dff5", " #fce1e4", "#fcf4dd", "#ddedea", "#daeaf6"]; // Array of color codes
+
+    return (
+      <Stack className="tags" direction="row" spacing={1} mt={2}>
+        {task.tags.map((tag, index) => {
+          const colorIndex = index % colors.length; // Get color index based on repetition
+          return (
+            <Chip
+              key={tag}
+              label={tag}
+              size="large"
+              sx={{
+                fontSize: "15px",
+                color: "black",
+                backgroundColor: colors[colorIndex],
+                padding: "8px 16px",
+              }} // Set background color
+            />
+          );
+        })}
+      </Stack>
+    );
+  };
 
   return (
     <Card className="task-card">
@@ -36,6 +66,7 @@ const Task = ({ task }) => {
           <Typography variant="body2" color="textSecondary" component="p">
             {task.details}
           </Typography>
+          {renderTags()}
         </div>
       </CardContent>
       <CardActions className="card-actions">

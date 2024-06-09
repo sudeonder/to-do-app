@@ -12,7 +12,7 @@ import { userVerification } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getTasks);
+router.get("/", userVerification, getTasks);
 router.get("/:id", getTask);
 router.post("/", createTask);
 router.delete("/:id", deleteTask);

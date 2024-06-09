@@ -13,7 +13,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import headerCard from "../../images/banner.png";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, logout } from "../../features/userSlice";
+import { createUser, refresh } from "../../features/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,22 +35,25 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.user);
+  const { authData, loading, error } = useSelector((state) => state.user);
   const [userData, setUserData] = useState({
     username: "",
     email: "",
     password: "",
   });
 
-  // clear user on mount
-  //useEffect(() => {
-  //  dispatch(logout());
-  //}, [dispatch]);
+  useEffect(() => {
+    // if user is already logged in, redirect to tasks page
+    if (authData) {
+      navigate("/board");
+    }
+  }, [authData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userData);
     dispatch(createUser(userData));
     clearForm();
   };
@@ -158,6 +162,15 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               {loading && <CircularProgress sx={{ marginRight: 5 }} />}
+              {error && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  sx={{ marginRight: 5 }}
+                >
+                  {error}
+                </Typography>
+              )}
               <Grid item>
                 <Link href="/signin" variant="body2">
                   Already have an account? Sign in

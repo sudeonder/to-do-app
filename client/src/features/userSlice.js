@@ -6,19 +6,19 @@ const createUser = createAsyncThunk("users/createUser", async (user) => {
   const response = await axios.post(`${AUTH_URL}/signup`, user, {
     withCredentials: true,
   });
-  console.log("---");
   console.log(response);
   return response.data;
 });
 
 const loginUser = createAsyncThunk("users/loginUser", async (user) => {
-  const response = await axios.post(`${AUTH_URL}/signin`, user);
+  const response = await axios.post(`${AUTH_URL}/signin`, user, {
+    withCredentials: true,
+  });
   return response.data;
 });
 
 const initialState = {
-  username: "",
-  cookie: "",
+  authData: null,
   loading: false,
   error: null,
 };
@@ -28,10 +28,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      localStorage.clear();
+      return { ...state, authData: null };
+    },
+    refresh: (state) => {
       state.username = "";
       state.cookie = "";
-      // redirect to sign in page
-      window.location.href = "/signin";
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -41,20 +44,38 @@ const userSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.username = action.payload.user.username;
-        // navigate to tasks page
-        window.location.href = "/board";
+        if (!action.payload.success) {
+          console.log(state.error);
+          state.error = action.payload.message;
+        } else {
+          localStorage.setItem(
+            "profile",
+            JSON.stringify({ ...action.payload })
+          );
+          state.authData = action.payload;
+        }
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+        console.log(action.error.message);
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        if (!action.payload.success) {
+          // set timeout for error
+          state.error = action.payload.message;
+        } else {
+          localStorage.setItem(
+            "profile",
+            JSON.stringify({ ...action.payload })
+          );
+          state.authData = action.payload;
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -63,6 +84,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, refresh } = userSlice.actions;
 export default userSlice.reducer;
 export { createUser, loginUser };

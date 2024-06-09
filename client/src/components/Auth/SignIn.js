@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,8 +12,11 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import headerCard from "../../images/banner.png";
+import { useDispatch, useSelector } from "react-redux";
 import headerCard2 from "../../images/banner2.png";
+import { loginUser, refresh } from "../../features/userSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,12 +37,31 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { authData, loading, error } = useSelector((state) => state.user);
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    // if user is already logged in, redirect to tasks page
+    if (authData) {
+      navigate("/board");
+    }
+  }, [authData]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    dispatch(loginUser(userData));
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setUserData({
+      email: "",
+      password: "",
     });
   };
 
@@ -78,12 +100,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -93,6 +110,10 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={userData.email}
+              onChange={(e) =>
+                setUserData({ ...userData, email: e.target.value })
+              }
             />
             <TextField
               margin="normal"
@@ -103,6 +124,10 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={userData.password}
+              onChange={(e) =>
+                setUserData({ ...userData, password: e.target.value })
+              }
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -116,12 +141,17 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
+              {loading && <CircularProgress sx={{ marginRight: 5 }} />}
+              {error && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  sx={{ marginRight: 5 }}
+                >
+                  {error}
+                </Typography>
+              )}
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}

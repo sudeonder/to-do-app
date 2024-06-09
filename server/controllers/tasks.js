@@ -3,13 +3,19 @@ import Task from "../models/task.js";
 // get all the tasks
 const getTasks = async (req, res) => {
   try {
-    const postMessages = await Task.find();
-    res.status(200).json(postMessages);
+    if (req.user) {
+      const username = req.user.username; // Extract username from the user object
+      const tasks = await Task.find({ username }); // Filter tasks by username
+      res.status(200).json(tasks);
+    } else {
+      console.log(req.user);
+      res.status(401).json({ message: "Unauthorized" });
+    }
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
-
 // get a task by id
 const getTask = async (req, res) => {
   const { id } = req.params;
@@ -30,6 +36,7 @@ const createTask = async (req, res) => {
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
+    console.log(error);
     res.status(409).json({ message: error.message });
   }
 };

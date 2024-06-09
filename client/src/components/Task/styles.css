@@ -17,3 +17,11 @@
     float: right;
     cursor: pointer;
 }
+
+.tags {
+  
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 2px;
+    margin-top: 10px;
+}

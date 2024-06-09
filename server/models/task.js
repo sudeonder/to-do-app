@@ -11,11 +11,15 @@ const taskSchema = mongoose.Schema({
     lowercase: true,
     maxLength: 200,
   },
-  userId: {
+  username: {
     type: String,
     required: true,
   },
-  tags: [],
+  tags: {
+    type: [String],
+    required: false,
+    default: [],
+  },
   selectedFile: String,
   createdAt: {
     type: Date,
