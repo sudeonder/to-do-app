@@ -33,7 +33,7 @@ const signIn = async (req, res, next) => {
     if (!email || !password) {
       return res.json({ message: "All fields are required" });
     }
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { username: email }] });
     if (!user) {
       return res.json({
         message: "Incorrect password or email",

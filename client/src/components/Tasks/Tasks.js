@@ -77,7 +77,11 @@ const Tasks = () => {
             sx={{ width: 300, marginBottom: 2 }}
             multiple
             id="tags-outlined"
-            options={data.reduce((acc, task) => [...acc, ...task.tags], [])}
+            options={[
+              ...new Set(
+                data.reduce((acc, task) => [...acc, ...task.tags], [])
+              ),
+            ]}
             getOptionLabel={(option) => option}
             value={selectedTags}
             onChange={handleTagsChange}
