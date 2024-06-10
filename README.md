@@ -78,10 +78,7 @@ npm start
 | sudeonder       | sude     |
 | playableFactory | olimp    |
 
- Please feel free to create users from http://localhost:3000/signup page.
-
-
- ## Database schema
+Please check them for better demonstration of features and feel free to create users from http://localhost:3000/signup page.
 
  
 
