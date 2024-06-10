@@ -5,6 +5,7 @@ This repository houses the source code for a feature-rich web-based to-do applic
 
 **Backend:** Node.js, Express  
 **Frontend:** React, Material UI, Redux Toolkit  
+**Database:** MongoDB
 **Authentication:** JWT (JSON Web Token)
 
 ## Features
@@ -70,6 +71,8 @@ npm install  # or yarn install
 npm start
 ```
  The application will be accessible at http://localhost:3000/ (which will redirect to http://localhost:3000/signin automatically) 
+ (Mongodb database credentials are supplied in .env file and is accessible from every IP address, thus no need for creating a local database).
+
 
  ## Test Users
  There are two users registered to database with following credentials:
